@@ -91,6 +91,7 @@
         // if it has a non-null image, it means we want to render a custom marker with the image.
         // In either case, we want to return the AIRMapMarker since it is both an MKAnnotation and an
         // MKAnnotationView all at the same time.
+        self.image = [UIImage imageNamed:self.imageSrc];
         self.layer.zPosition = self.zIndex;
         return self;
     }
@@ -264,7 +265,12 @@
 - (void)setImageSrc:(NSString *)imageSrc
 {
     _imageSrc = imageSrc;
-
+    /*don't custom marker images initially as it's too early and you might get a 
+    marker icon in the top left corner of the screen*/
+    if (self.rightTimeToLoadMarkers == NO) {
+        self.rightTimeToLoadMarkers = YES;
+        return;
+    }
     if (_reloadImageCancellationBlock) {
         _reloadImageCancellationBlock();
         _reloadImageCancellationBlock = nil;
