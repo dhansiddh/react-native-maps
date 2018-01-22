@@ -176,7 +176,7 @@ const NSInteger AIRMapMaxZoomLevel = 20;
     UIView *calloutMaybe = [self.calloutView hitTest:[self.calloutView convertPoint:point fromView:self] withEvent:event];
     if (calloutMaybe) return calloutMaybe;
 
-    return ((UIView *)[((UIView *)[self.subviews objectAtIndex:0]).subviews objectAtIndex:2]);
+    return [super hitTest:point withEvent:event];
 }
 
 #pragma mark SMCalloutViewDelegate
