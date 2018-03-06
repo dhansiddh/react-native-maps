@@ -15,12 +15,6 @@ Without this key the Google Maps map won't render anything.
 
 
 
-## IMPORTANT!!
-
-**!!  DO NOT USE  !!** `react-native link`
-
-Have ran it already? Read [this](#on-ios).
-
 ## iOS - CocoaPods
 
 Setup your `Podfile` (found at `/ios/Podfile` as below, replace all references to `_YOUR_PROJECT_TARGET_` with your project target (it's the same as project name by default), and then run `pod install` while in the `ios` folder.
@@ -72,7 +66,15 @@ end
 ~~~
 
 
+
+## IMPORTANT!!
+
+**!!  DO NOT USE  !!** `react-native link`
+
+Have ran it already? Read [this](#on-ios).
+
 ## If you want to use Google maps
+
 
 Add to `ios/_YOUR_PROJECT_NAME_/AppDelegate.m:
 
@@ -88,7 +90,9 @@ Add to `ios/_YOUR_PROJECT_NAME_/AppDelegate.m:
 ...
 ```
 
+## Notes on running on a real ios device
 
+The steps are as described in https://facebook.github.io/react-native/docs/running-on-device.html , however instead of opening the .xcodeproj file you should open .xcworkspace file.
 
 
 ## Android
@@ -103,7 +107,26 @@ Add to `ios/_YOUR_PROJECT_NAME_/AppDelegate.m:
    }
    ```
 
-   If you have a different play services than the one included in this library, use the following instead (switch 10.0.1 for the desired version):
+If you've defined *[project-wide properties](https://developer.android.com/studio/build/gradle-tips.html)* (**recommended**) in your root `build.gradle`, this library will detect the presence of the following properties:
+
+    ```groovy
+    buildscript {...}
+    allprojects {...}
+    
+    /**
+     + Project-wide Gradle configuration properties
+     */
+    ext {
+        compileSdkVersion   = 26
+        targetSdkVersion    = 26
+        buildToolsVersion   = "26.0.2"
+        supportLibVersion   = "26.1.0"
+        googlePlayServicesVersion = "11.8.0"
+        androidMapsUtilsVersion = "0.5+"
+    }
+    ```
+
+   If you do **not** have *project-wide properties* defined and have a different play-services version than the one included in this library, use the following instead (switch 10.0.1 for the desired version):
 
    ```groovy
    ...
@@ -212,7 +235,7 @@ If you use Xcode with version less than 9 you may get `use of undeclared identif
      },
    });
 
-   module.exports = class MyApp extends React.Component {
+   export default class MyApp extends React.Component {
      render() {
        const { region } = this.props;
        console.log(region);

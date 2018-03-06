@@ -14,8 +14,11 @@
 #import <React/RCTImageLoader.h>
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
+NSInteger const CALLOUT_OPEN_ZINDEX_BASELINE = 999;
 
 @implementation AIREmptyCalloutBackgroundView
+bool _calloutIsOpen = NO;
+NSInteger _zIndexBeforeOpen = 0;
 @end
 
 @implementation AIRMapMarker {
@@ -138,6 +141,9 @@
 
 - (void)showCalloutView
 {
+    _calloutIsOpen = YES;
+    [self setZIndex:_zIndexBeforeOpen];
+    
     MKAnnotationView *annotationView = [self getAnnotationView];
 
     [self setSelected:YES animated:NO];
@@ -223,6 +229,8 @@
 
 - (void)hideCalloutView
 {
+    _calloutIsOpen = NO;
+    [self setZIndex:_zIndexBeforeOpen];
     // hide the callout view
     [self.map.calloutView dismissCalloutAnimated:YES];
 
@@ -304,8 +312,9 @@
 
 - (void)setZIndex:(NSInteger)zIndex
 {
-    _zIndex = zIndex;
-    self.layer.zPosition = _zIndex;
+    _zIndexBeforeOpen = zIndex;
+    _zIndex = _calloutIsOpen ? zIndex + CALLOUT_OPEN_ZINDEX_BASELINE : zIndex;
+    self.layer.zPosition = zIndex;
 }
 
 @end
